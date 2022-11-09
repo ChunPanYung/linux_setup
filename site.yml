@@ -1,0 +1,34 @@
+---
+- hosts: all
+  tags:
+    - never
+    - ping
+  tasks:
+    - name: ping test
+      ansible.builtin.ping:
+
+- hosts: localhost
+  tags: local
+  pre_tasks:
+    - name: Install required collections
+      community.general.ansible_galaxy_install:
+        type: collection
+        requirements_file: roles/requirements.yml
+
+- hosts: all
+  become: true
+  tags:
+    - sudo
+  vars_prompt:
+    - name: ansible_become_pass
+      prompt: "BECOME password"
+
+  roles:
+    - role: ansi_colle.linux_config.common
+      tags: common
+    - role: ansi_colle.linux_config.dev_tools
+      tags: dev_tools
+    - role: sys_config
+      tags: sys_config
+    - role: flatpak
+      tags: flatpak

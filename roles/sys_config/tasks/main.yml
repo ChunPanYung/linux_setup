@@ -1,0 +1,25 @@
+---
+# roles/sys_config/tasks
+- name: Install packages
+  ansible.builtin.apt:
+    name:
+      - mcomix
+      - unrar
+      - keepassxc
+
+- name: Install following packages if it is KDE Desktop Envionment
+  ansible.builtin.apt:
+    name:
+      - elisa
+      - transmission-qt
+      - yakuake
+      - kwrite
+  when: lookup('ansible.builtin.env', '$XDG_SESSION_DESKTOP') == "KDE"
+
+- name: Install new fonts
+  block:
+    - name: Create local directory for fonts
+      ansible.builtin.file:
+        path: /home/{{ ansible_user }}/.local/share/fonts
+        state: directory
+        mode: '0755'

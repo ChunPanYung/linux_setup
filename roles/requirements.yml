@@ -1,0 +1,8 @@
+---
+collections:
+  - community.general
+  - community.docker
+
+  - name: https://gitlab.com/ahhh-tomation/ansi_colle.git#/linux_config
+    type: git
+    version: main

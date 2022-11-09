@@ -1,0 +1,24 @@
+---
+# roles/flatpak/tasks
+- name: Install flatpak & discover flatpak backend
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - flatpak
+    - plasma-discover-backend-flatpak
+
+- name: Add flathub flatpak repository remote to the user installation
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
+- name: Install flatpak package
+  become: false
+  community.general.flatpak:
+    name:
+      - com.valvesoftware.Steam
+      - org.mozilla.firefox
+      - com.github.tchx84.Flatseal
+    state: present
